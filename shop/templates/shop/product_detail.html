@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{ product.name }}
+{% endblock title %}
+
+{% block breadcrump %}
+<h2 class="bradcaump-title">product.name</h2>
+<nav class="bradcaump-content">
+  <a class="breadcrumb_item" href="/">Home</a>
+  <span class="brd-separetor">/</span>
+  <a class="breadcrumb_item" href="/">Products</a>
+  <span class="brd-separetor">/</span>
+  <span class="breadcrumb_item active">{{ product.name }}</span>
+</nav>
+{% endblock breadcrump %}
+
+{% block content %}
+<!-- Detail Page -->
+<div class="maincontent bg--white pt--80 pb--55">
+  <div class="container">
+    <div class="row">
+
+      <!-- details -->
+      <div class="col-lg-9 col-12">
+
+        <!-- Products Details -->
+        <div class="wn__single__product">
+          <div class="row">
+
+            <!-- Images -->
+            <div class="col-lg-6 col-12">
+              <div class="wn__fotorama__wrapper">
+                <div class="fotorama wn__fotorama__action" data-nav="thumbs">
+                  <a
+                    href="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/1.jpg' %}{% endif %}">
+                    <img
+                      src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/1.jpg' %}{% endif %}"
+                      alt="">
+                  </a>
+                  <a href="{% static 'images/2.jpg' %}">
+                    <img src="{% static 'images/2.jpg' %}" alt="">
+                  </a>
+                  <!-- <a href="3.jpg"><img src="images/product/3.jpg" alt=""></a>
+                  <a href="4.jpg"><img src="images/product/4.jpg" alt=""></a>
+                  <a href="5.jpg"><img src="images/product/5.jpg" alt=""></a>
+                  <a href="6.jpg"><img src="images/product/6.jpg" alt=""></a>
+                  <a href="7.jpg"><img src="images/product/7.jpg" alt=""></a>
+                  <a href="8.jpg"><img src="images/product/8.jpg" alt=""></a> -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Details -->
+            <div class="col-lg-6 col-12">
+              <div class="product__info__main">
+                <h1>{{ product.name }}</h1>
+                <div class="product-reviews-summary d-flex">
+                  <ul class="rating-summary d-flex">
+                    <li><i class="zmdi zmdi-star-outline"></i></li>
+                    <li><i class="zmdi zmdi-star-outline"></i></li>
+                    <li><i class="zmdi zmdi-star-outline"></i></li>
+                    <li class="off"><i class="zmdi zmdi-star-outline"></i></li>
+                    <li class="off"><i class="zmdi zmdi-star-outline"></i></li>
+                  </ul>
+                </div>
+                <div class="price-box">
+                  <span>RM{{ product.price }}</span>
+                </div>
+                <div class="product__overview">
+                  <p>{{ product.description|linebreaks }}</p>
+                </div>
+
+                <!-- Cart Form -->
+                <div class="box-tocart d-flex">
+                  <span>Qty</span>
+                  <input id="qty" class="input-text qty" name="qty" min="1" value="1" title="Qty" type="number">
+                  <div class="addtocart__actions">
+                    <button class="tocart" type="submit" title="Add to Cart">Add to Cart</button>
+                  </div>
+                  <div class="product-addto-links clearfix">
+                    <a class="wishlist" href="#"></a>
+                    <a class="compare" href="#"></a>
+                  </div>
+                </div>
+
+                <div class="product_meta">
+                  <span class="posted_in">Categories:
+                    <a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a>
+                  </span>
+                </div>
+
+                <!-- Product share -->
+                <div class="product-share">
+                  <ul>
+                    <li class="categories-title">Share :</li>
+                    <li>
+                      <a href="#">
+                        <i class="icon-social-twitter icons"></i>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <i class="icon-social-tumblr icons"></i>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <i class="icon-social-facebook icons"></i>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <i class="icon-social-linkedin icons"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-lg-3 col-12 md-mt-40 sm-mt-40">
+        <div class="shop__sidebar">
+
+          <!-- Categories -->
+          <aside class="wedget__categories poroduct--cat">
+            <h3 class="wedget__title">Product Categories</h3>
+            <ul>
+              <li>
+                <a {% if not category %}class="selected" {% endif %} href="{% url 'shop:product_list' %}">All</a>
+              </li>
+
+              {% for c in categories %}
+              <li>
+                <a {% if category.slug == c.slug %}class="selected" {% endif %}
+                  href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+              </li>
+              {% endfor %}
+            </ul>
+          </aside>
+
+          <!-- price filter -->
+
+          <!-- product tags -->
+
+          <!-- product showcase -->
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- End Detail Page -->
+{% endblock content %}
+
+<div class="product-detail">
+  <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}">
+  <h1>{{ product.name }}</h1>
+  <h2><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h2>
+  <p class="price">${{ product.price }}</p>
+  {{ product.description|linebreaks }}
+</div>

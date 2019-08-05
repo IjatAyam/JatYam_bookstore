@@ -1,0 +1,16 @@
+/*********************************************************************************
+
+	Template Name: Boighor Bookshop Responsive Bootstrap4 Template
+	Description: Template description
+	Version: 1.0
+	Note: This is custom css. All custom styles (user styles) declare here.
+
+**********************************************************************************/
+
+.wedget__categories.poroduct--cat ul li a.selected {
+  color: #e59285;
+}
+
+.bg-image--6 {
+  background-image: url(../images/bg/wallpaper.jpg);
+}

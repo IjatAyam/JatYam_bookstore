@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{% if category %}{{ category.name }}{% else %}Products{% endif %}
+{% endblock title %}
+
+{% block breadcrump %}
+<h2 class="bradcaump-title">Products</h2>
+<nav class="bradcaump-content">
+  <a class="breadcrumb_item" href="/">Home</a>
+  <span class="brd-separetor">/</span>
+  <span class="breadcrumb_item active">Product</span>
+</nav>
+{% endblock breadcrump %}
+
+{% block content %}
+<div class="page-shop-sidebar left--sidebar bg--white section-padding--lg">
+  <div class="container">
+    <div class="row">
+
+      <!-- Shop sidebar -->
+      <div class="col-lg-3 col-12 order-2 order-lg-1 md-mt-40 sm-mt-40">
+        <div class="shop__sidebar">
+
+          <!-- Categories -->
+          <aside class="wedget__categories poroduct--cat">
+            <h3 class="wedget__title">Product Categories</h3>
+            <ul>
+              <li>
+                <a {% if not category %}class="selected" {% endif %} href="{% url 'shop:product_list' %}">All</a>
+              </li>
+
+              {% for c in categories %}
+              <li>
+                <a {% if category.slug == c.slug %}class="selected" {% endif %}
+                  href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+              </li>
+              {% endfor %}
+            </ul>
+          </aside>
+
+          <!-- price filter -->
+
+          <!-- product tags -->
+
+          <!-- product showcase -->
+        </div>
+      </div>
+
+      <!-- Shoplist -->
+      <div class="col-lg-9 col-12 order-1 order-lg-2">
+        <!-- nav shoplist -->
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="shop__list__wrapper d-flex flex-wrap flex-md-nowrap justify-content-between">
+              <div class="shop__list nav justify-content-center" role="tablist">
+                <a class="nav-item nav-link active" data-toggle="tab" href="#nav-grid" role="tab"><i
+                    class="fa fa-th"></i></a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#nav-list" role="tab"><i
+                    class="fa fa-list"></i></a>
+              </div>
+              <p>Showing results</p>
+
+              <!-- sort by -->
+              <div class="orderby__wrapper">
+                <span>Sort By</span>
+                <select class="shot__byselect">
+                  <option>Not Yet</option>
+                  <!-- <option>Default sorting</option>
+                  <option>HeadPhone</option>
+                  <option>Furniture</option>
+                  <option>Jewellery</option>
+                  <option>Handmade</option>
+                  <option>Kids</option> -->
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- List products -->
+        <div class="tab__container">
+
+          <!-- nav grid -->
+          <div class="shop-grid tab-pane fade show active" id="nav-grid" role="tabpanel">
+            <div class="row">
+
+              <!-- Start Single Product -->
+              {% for product in products %}
+              <div class="product product__style--3 col-lg-4 col-md-4 col-sm-6 col-12">
+
+                <!-- Thumbnail -->
+                <div class="product__thumb">
+                  <a class="first__img" href="{{ product.get_absolute_url }}">
+                    <img
+                      src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/1.jpg' %}{% endif %}"
+                      alt="product image">
+                  </a>
+                  <a class="second__img animation1" href="{{ product.get_absolute_url }}">
+                    <img src="{% static 'images/2.jpg' %}" alt="product image">
+                  </a>
+
+                  <!-- hot label -->
+                  <!-- <div class="hot__box">
+                    <span class="hot-label">BEST SALLER</span>
+                  </div> -->
+                </div>
+
+                <!-- product content -->
+                <div class="product__content content--center">
+                  <h4><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h4>
+                  <ul class="prize d-flex">
+                    <li>RM{{ product.price }}</li>
+                    <!-- <li class="old_prize">$35.00</li> -->
+                  </ul>
+
+                  <!-- action -->
+                  <div class="action">
+                    <div class="actions_inner">
+                      <ul class="add_to_links">
+                        <li><a class="cart" href="#"><i class="bi bi-shopping-bag4"></i></a></li>
+                        <li><a class="wishlist" href="#"><i class="bi bi-shopping-cart-full"></i></a></li>
+                        <li><a class="compare" href="#"><i class="bi bi-heart-beat"></i></a></li>
+                        <!-- <li><a data-toggle="modal" title="Quick View" class="quickview modal-view detail-link"
+                            href="#productmodal"><i class="bi bi-search"></i></a></li> -->
+                        <li><i class="bi bi-search"></i></a></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <!-- hover -->
+                  <div class="product__hover--content">
+                    <ul class="rating d-flex">
+                      <li class="on"><i class="fa fa-star-o"></i></li>
+                      <li class="on"><i class="fa fa-star-o"></i></li>
+                      <li class="on"><i class="fa fa-star-o"></i></li>
+                      <li><i class="fa fa-star-o"></i></li>
+                      <li><i class="fa fa-star-o"></i></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+              <!-- End Single Product -->
+
+              <!-- pagination -->
+            </div>
+          </div>
+
+          <!-- nav list -->
+          <div class="shop-grid tab-pane fade" id="nav-list" role="tabpanel">
+            <div class="list__view__wrapper">
+
+              <!-- Start Single Product -->
+              {% for product in products %}
+              <div class="list__view">
+
+                <!-- Thumbnail -->
+                <div class="thumb">
+                  <a class="first__img" href="{{ product.get_absolute_url }}">
+                    <img
+                      src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/1.jpg' %}{% endif %}"
+                      alt="product images">
+                  </a>
+                  <a class="second__img animation1" href="{{ product.get_absolute_url }}">
+                    <img src="{% static 'images/2.jpg' %}" alt="product images">
+                  </a>
+                </div>
+
+                <!-- Content -->
+                <div class="content">
+                  <h2><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h2>
+                  <ul class="rating d-flex">
+                    <li class="on"><i class="fa fa-star-o"></i></li>
+                    <li class="on"><i class="fa fa-star-o"></i></li>
+                    <li class="on"><i class="fa fa-star-o"></i></li>
+                    <li class="on"><i class="fa fa-star-o"></i></li>
+                    <li><i class="fa fa-star-o"></i></li>
+                    <li><i class="fa fa-star-o"></i></li>
+                  </ul>
+                  <ul class="prize__box">
+                    <li>RM{{ product.price }}</li>
+                    <!-- <li class="old__prize">$220.00</li> -->
+                  </ul>
+                  <p>{{ product.description }}</p>
+                  <ul class="cart__action d-flex">
+                    <li class="cart"><a href="#">Add to cart</a></li>
+                    <li class="wishlist"><a href="#"></a></li>
+                    <li class="compare"><a href="#"></a></li>
+                  </ul>
+
+                </div>
+              </div>
+              {% endfor %}
+              <!-- End Single Product -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
