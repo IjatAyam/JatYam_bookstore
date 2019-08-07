@@ -14,3 +14,13 @@
 .bg-image--6 {
   background-image: url(../images/bg/wallpaper.jpg);
 }
+
+.table-content table td input.update-qty {
+  width: 80px;
+  transition: all 0.3s ease 0s;
+}
+
+.table-content table td input.update-qty:hover {
+  background: #e59285 none repeat scroll 0 0;
+  color: #fff;
+}

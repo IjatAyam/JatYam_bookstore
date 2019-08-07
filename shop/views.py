@@ -1,8 +1,9 @@
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView
+from django import forms
 
-
+from cart.forms import CartAddProductForm
 from .models import Product, Category
 
 
@@ -44,5 +45,7 @@ class ProductDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        cart_product_form = CartAddProductForm()
+        context['cart_product_form'] = cart_product_form
         context['categories'] = Category.objects.all()
         return context

@@ -1,4 +1,5 @@
 {% load static %}
+{% load thumbnail %}
 <!doctype html>
 <html class="no-js" lang="zxx">
 
@@ -65,9 +66,74 @@
             <ul class="header__sidebar__right d-flex justify-content-end align-items-center">
               <li class="shop_search"><a class="search__active" href="#"></a></li>
               <li class="wishlist"><a href="#"></a></li>
-              <li class="shopcart"><a class="cartbox_active" href="#"><span class="product_qun">3</span></a>
-                <!-- shopcart -->
+
+              {% with total_items=cart|length %}
+              <li class="shopcart"><a class="cartbox_active" href="#"><span
+                    class="product_qun">{{ total_items }}</span></a>
+                <!-- Start Shopping Cart -->
+                <div class="block-minicart minicart__active">
+                  <div class="minicart-content-wrapper">
+                    <div class="micart__close">
+                      <span>close</span>
+                    </div>
+                    {% if cart|length > 0 %}
+                    <div class="items-total d-flex justify-content-between">
+                      <span>{{ total_items }} item{{ total_items|pluralize }}</span>
+                      <span>Cart Subtotal</span>
+                    </div>
+                    <div class="total_amount text-right">
+                      <span>RM{{ cart.get_total_price }}</span>
+                    </div>
+                    <div class="mini_action checkout">
+                      <a class="checkout__btn" href="{% url 'cart:cart_detail' %}">Go to Checkout</a>
+                    </div>
+                    <div class="single__items">
+                      <div class="miniproduct">
+                        <!-- single items -->
+                        {% for item in cart %}
+                        {% with product=item.product %}
+                        <div class="item01 d-flex mt--20">
+                          <div class="thumb">
+                            <a href="{{ product.get_absolute_url }}">
+                              {% if product.image %}
+                              {% thumbnail product.image "75x94" crop="100%" as im %}
+                              <img src="{{ im.url }}" alt="product img">
+                              {% endthumbnail %}
+                              {% else %}
+                              <img src="{% static 'images/1.jpg' %}" alt="product img">
+                              {% endif %}
+                            </a>
+                          </div>
+                          <div class="content">
+                            <h6><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h6>
+                            <span class="prize">RM{{ item.price }}</span>
+                            <div class="product_prize d-flex justify-content-between">
+                              <span class="qun">Qty: {{ item.quantity }}</span>
+                              <ul class="d-flex justify-content-end">
+                                <li><a href="#"><i class="zmdi zmdi-settings"></i></a></li>
+                                <li>
+                                  <a href="{% url 'cart:cart_remove' product.id %}">
+                                    <i class="zmdi zmdi-delete"></i>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        {% endwith %}
+                        {% endfor %}
+                      </div>
+                    </div>
+                    {% else %}
+                    <div class="items-total d-flex justify-content-between">
+                      <span>Your cart is empty.</span>
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
               </li>
+              {% endwith %}
+
               <li class="setting__bar__icon"><a class="setting__active" href="#"></a>
                 <!-- account manage -->
               </li>

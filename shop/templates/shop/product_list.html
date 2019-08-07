@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load thumbnail %}
 
 {% block title %}
 {% if category %}{{ category.name }}{% else %}Products{% endif %}
@@ -93,13 +94,17 @@
                 <!-- Thumbnail -->
                 <div class="product__thumb">
                   <a class="first__img" href="{{ product.get_absolute_url }}">
-                    <img
-                      src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/1.jpg' %}{% endif %}"
-                      alt="product image">
+                    {% if product.image %}
+                    {% thumbnail product.image "450x565" crop="100%" as im %}
+                    <img src="{{ im.url }}" alt="product img">
+                    {% endthumbnail %}
+                    {% else %}
+                    <img src="{% static 'images/1.jpg' %}" alt="product img">
+                    {% endif %}
                   </a>
-                  <a class="second__img animation1" href="{{ product.get_absolute_url }}">
+                  <!-- <a class="second__img animation1" href="{{ product.get_absolute_url }}">
                     <img src="{% static 'images/2.jpg' %}" alt="product image">
-                  </a>
+                  </a> -->
 
                   <!-- hot label -->
                   <!-- <div class="hot__box">
@@ -159,13 +164,17 @@
                 <!-- Thumbnail -->
                 <div class="thumb">
                   <a class="first__img" href="{{ product.get_absolute_url }}">
-                    <img
-                      src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/1.jpg' %}{% endif %}"
-                      alt="product images">
+                    {% if product.image %}
+                    {% thumbnail product.image "450x565" crop="100%" as im %}
+                    <img src="{{ im.url }}" alt="product img">
+                    {% endthumbnail %}
+                    {% else %}
+                    <img src="{% static 'images/1.jpg' %}" alt="product img">
+                    {% endif %}
                   </a>
-                  <a class="second__img animation1" href="{{ product.get_absolute_url }}">
+                  <!-- <a class="second__img animation1" href="{{ product.get_absolute_url }}">
                     <img src="{% static 'images/2.jpg' %}" alt="product images">
-                  </a>
+                  </a> -->
                 </div>
 
                 <!-- Content -->
@@ -183,7 +192,7 @@
                     <li>RM{{ product.price }}</li>
                     <!-- <li class="old__prize">$220.00</li> -->
                   </ul>
-                  <p>{{ product.description }}</p>
+                  {{ product.description|truncatechars:250 }}
                   <ul class="cart__action d-flex">
                     <li class="cart"><a href="#">Add to cart</a></li>
                     <li class="wishlist"><a href="#"></a></li>

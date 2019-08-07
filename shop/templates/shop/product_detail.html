@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load thumbnail %}
 
 {% block title %}
 {{ product.name }}
 {% endblock title %}
 
 {% block breadcrump %}
-<h2 class="bradcaump-title">product.name</h2>
+<h2 class="bradcaump-title">{{ product.name }}</h2>
 <nav class="bradcaump-content">
   <a class="breadcrumb_item" href="/">Home</a>
   <span class="brd-separetor">/</span>
@@ -33,15 +34,18 @@
             <div class="col-lg-6 col-12">
               <div class="wn__fotorama__wrapper">
                 <div class="fotorama wn__fotorama__action" data-nav="thumbs">
-                  <a
-                    href="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/1.jpg' %}{% endif %}">
-                    <img
-                      src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/1.jpg' %}{% endif %}"
-                      alt="">
+                  <a href="#">
+                    {% if product.image %}
+                    {% thumbnail product.image "450x565" crop="100%" as im %}
+                    <img src="{{ im.url }}" alt="product img">
+                    {% endthumbnail %}
+                    {% else %}
+                    <img src="{% static 'images/1.jpg' %}" alt="product img">
+                    {% endif %}
                   </a>
-                  <a href="{% static 'images/2.jpg' %}">
+                  <!-- <a href="#">
                     <img src="{% static 'images/2.jpg' %}" alt="">
-                  </a>
+                  </a> -->
                   <!-- <a href="3.jpg"><img src="images/product/3.jpg" alt=""></a>
                   <a href="4.jpg"><img src="images/product/4.jpg" alt=""></a>
                   <a href="5.jpg"><img src="images/product/5.jpg" alt=""></a>
@@ -69,21 +73,25 @@
                   <span>RM{{ product.price }}</span>
                 </div>
                 <div class="product__overview">
-                  <p>{{ product.description|linebreaks }}</p>
+                  {{ product.description|linebreaks }}
                 </div>
 
                 <!-- Cart Form -->
-                <div class="box-tocart d-flex">
-                  <span>Qty</span>
-                  <input id="qty" class="input-text qty" name="qty" min="1" value="1" title="Qty" type="number">
-                  <div class="addtocart__actions">
-                    <button class="tocart" type="submit" title="Add to Cart">Add to Cart</button>
+                <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                  <div class="box-tocart d-flex">
+                    <span>Qty</span>
+                    {{ cart_product_form.quantity }}
+                    {{ cart_product_form.update }}
+                    {% csrf_token %}
+                    <div class="addtocart__actions">
+                      <button class="tocart" type="submit" title="Add to Cart">Add to Cart</button>
+                    </div>
+                    <div class="product-addto-links clearfix">
+                      <a class="wishlist" href="#"></a>
+                      <a class="compare" href="#"></a>
+                    </div>
                   </div>
-                  <div class="product-addto-links clearfix">
-                    <a class="wishlist" href="#"></a>
-                    <a class="compare" href="#"></a>
-                  </div>
-                </div>
+                </form>
 
                 <div class="product_meta">
                   <span class="posted_in">Categories:

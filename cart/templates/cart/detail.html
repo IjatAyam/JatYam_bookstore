@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+
+{% block title %}
+Cart
+{% endblock title %}
+
+{% block breadcrump %}
+<h2 class="bradcaump-title">Your Shopping Cart</h2>
+<nav class="bradcaump-content">
+  <a class="breadcrumb_item" href="/">Home</a>
+  <span class="brd-separetor">/</span>
+  <span class="breadcrumb_item active">Cart</span>
+</nav>
+{% endblock breadcrump %}
+
+{% block content %}
+<!-- cart-main-area start -->
+<div class="cart-main-area section-padding--lg bg--white">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 ol-lg-12">
+        <div class="table-content wnro__table table-responsive">
+          <table>
+
+            <!-- Head Table -->
+            <thead>
+              <tr class="title-top">
+                <th class="product-thumbnail">Image</th>
+                <th class="product-name">Product</th>
+                <th class="product-price">Price</th>
+                <th class="product-quantity">Quantity</th>
+                <th class="product-subtotal">Total</th>
+                <th class="product-remove">Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <!-- each item in cart -->
+              {% for item in cart %}
+              {% with product=item.product %}
+              <tr>
+                <td class="product-thumbnail">
+                  <a href="{{ product.get_absolute_url }}">
+                    {% if product.image %}
+                    {% thumbnail product.image "80x100" crop="100%" as im %}
+                    <img src="{{ im.url }}" alt="product img">
+                    {% endthumbnail %}
+                    {% else %}
+                    <img src="{% static 'images/1.jpg' %}" alt="product img">
+                    {% endif %}
+                  </a>
+                </td>
+                <td class="product-name"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></td>
+                <td class="product-price"><span class="amount">RM{{ item.price }}</span></td>
+                <td class="product-quantity">
+                  <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                    {{ item.update_quantity_form.quantity }}
+                    {{ item.update_quantity_form.update }}
+                    {% csrf_token %}
+                    <input type="submit" value="Update" class="update-qty">
+                  </form>
+                  <!-- <input type="number" value="{{ item.quantity }}"> -->
+                </td>
+                <td class="product-subtotal">RM{{ item.total_price }}</td>
+                <td class="product-remove"><a href="{% url 'cart:cart_remove' product.id %}">X</a></td>
+              </tr>
+              {% endwith %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="cartbox__btn">
+          <ul class="cart__btn__list d-flex flex-wrap flex-md-nowrap flex-lg-nowrap justify-content-between">
+            <li><a href="#">Apply Coupon Code</a></li>
+            <li><a href="#">Check Out</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6 offset-lg-6">
+        <div class="cartbox__total__area">
+          <div class="cartbox-total d-flex justify-content-between">
+            <ul class="cart__total__list">
+              <li>Sub Total</li>
+            </ul>
+            <ul class="cart__total__tk">
+              <li>RM{{ cart.get_total_price|floatformat:"2" }}</li>
+            </ul>
+          </div>
+          <div class="cart__total__amount">
+            <span>Grand Total</span>
+            <span>RM{{ cart.get_total_price|floatformat:"2" }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- cart-main-area end -->
+{% endblock content %}
