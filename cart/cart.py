@@ -15,6 +15,7 @@ class Cart(object):
             # save an empty cart in the session
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
+        self.check()
 
     def check(self):
         for product_id in list(self.cart):
