@@ -29,3 +29,16 @@
   padding: 10px 10px 10px 10px;
   color: #969699;
 }
+
+button[type=submit].link-btn {
+  border: none;
+  background: none;
+  display: inline-block;
+  color: #fff;
+  font-size: 26px;
+  height: 60px;
+  left: 0;
+  text-align: center;
+  top: 0;
+  width: 60px;
+}

@@ -149,6 +149,24 @@
     <!-- //Header -->
 
     <!-- Start Search Popup -->
+    <div class="box-search-content search_active block-bg close__top">
+      {% if category %}
+      <form id="search_mini_form" class="minisearch" action="{{ category.get_absolute_url }}">
+        {% else %}
+        <form id="search_mini_form" class="minisearch" action="{% url 'shop:product_list' %}">
+          {% endif %}
+          <div class="field__search">
+            {{ search_form.query }}
+            <div class="action">
+              <button type="submit" class="link-btn"><i class="zmdi zmdi-search"></i></button>
+            </div>
+          </div>
+        </form>
+        <div class="close__wrap">
+          <span>close</span>
+        </div>
+    </div>
+    <!-- End Search Popup -->
 
     <!-- Start Bradcaump area -->
     <div class="ht__bradcaump__area bg-image--6">
