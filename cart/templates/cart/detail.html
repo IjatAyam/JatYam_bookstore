@@ -73,7 +73,7 @@ Cart
         </div>
         <div class="cartbox__btn">
           <ul class="cart__btn__list d-flex flex-wrap flex-md-nowrap flex-lg-nowrap justify-content-between">
-            <li><a href="#">Apply Coupon Code</a></li>
+            <li><a class="coupon__active" href="#">Apply Coupon Code</a></li>
             <li><a href="#">Check Out</a></li>
           </ul>
         </div>
@@ -82,6 +82,7 @@ Cart
     <div class="row">
       <div class="col-lg-6 offset-lg-6">
         <div class="cartbox__total__area">
+          {% if cart.coupon %}
           <div class="cartbox-total d-flex justify-content-between">
             <ul class="cart__total__list">
               <li>Sub Total</li>
@@ -90,14 +91,42 @@ Cart
               <li>RM{{ cart.get_total_price|floatformat:"2" }}</li>
             </ul>
           </div>
+
+          <div class="cartbox-total d-flex justify-content-between">
+            <ul class="cart__total__list">
+              <li>"{{ cart.coupon.code }}" coupon ({{ cart.coupon.discount }}% off)</li>
+            </ul>
+            <ul class="cart__total__tk">
+              <li>- RM{{ cart.get_discount|floatformat:"2" }}</li>
+            </ul>
+          </div>
+          {% endif %}
           <div class="cart__total__amount">
             <span>Grand Total</span>
-            <span>RM{{ cart.get_total_price|floatformat:"2" }}</span>
+            <span>RM{{ cart.get_total_price_after_discount|floatformat:"2" }}</span>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Start Coupon Popup -->
+<div class="box-search-content coupon_active block-bg close__top">
+  <form id="search_mini_form" class="minisearch" action="{% url 'coupons:apply' %}" method="post">
+    <div class="field__search">
+      {{ coupon_apply_form }}
+      {% csrf_token %}
+      <div class="action">
+        <input class="apply-coupon" type="submit" value="Apply">
+      </div>
+    </div>
+  </form>
+  <div class="close__wrap">
+    <span>close</span>
+  </div>
+</div>
+<!-- End Coupon Popup -->
+
 <!-- cart-main-area end -->
 {% endblock content %}

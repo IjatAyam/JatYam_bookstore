@@ -24,3 +24,8 @@
   background: #e59285 none repeat scroll 0 0;
   color: #fff;
 }
+
+.field__search input.apply-coupon {
+  padding: 10px 10px 10px 10px;
+  color: #969699;
+}

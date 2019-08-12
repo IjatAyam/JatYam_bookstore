@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'shop.apps.ShopConfig',
     'cart.apps.CartConfig',
     'sorl.thumbnail',
+    'coupons.apps.CouponsConfig',
 ]
 
 MIDDLEWARE = [

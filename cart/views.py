@@ -3,6 +3,8 @@ from django.views.decorators.http import require_POST
 from django.shortcuts import render, get_object_or_404, redirect
 from shop.models import Product
 from django.views.generic import FormView, View
+
+from coupons.forms import CouponApplyForm
 from .forms import CartAddProductForm
 from .cart import Cart
 
@@ -41,14 +43,14 @@ class CartDetail(View):
         for item in cart:
             item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'],
                                                                        'update': True})
-        # coupon_apply_form = CouponApplyForm()
+        coupon_apply_form = CouponApplyForm()
 
         # r = Recommender()
         # cart_products = [item['product'] for item in cart]
         # recommended_products = r.suggest_products_for(cart_products, max_results=4)
 
         return render(request,
-                      'cart/detail.html',
-                      {'cart': cart})
-        #    'coupon_apply_form': coupon_apply_form,
+                      self.template_name,
+                      {'cart': cart,
+                       'coupon_apply_form': coupon_apply_form})
         #    'recommended_products': recommended_products})
