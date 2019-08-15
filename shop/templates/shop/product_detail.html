@@ -87,7 +87,7 @@
                       <button class="tocart" type="submit" title="Add to Cart">Add to Cart</button>
                     </div>
                     <div class="product-addto-links clearfix">
-                      <a class="wishlist" href="#"></a>
+                      <a class="wishlist" href="#" data-id="{{ product.id }}"></a>
                       <a class="compare" href="#"></a>
                     </div>
                   </div>
@@ -169,10 +169,15 @@
 <!-- End Detail Page -->
 {% endblock content %}
 
-<div class="product-detail">
-  <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}">
-  <h1>{{ product.name }}</h1>
-  <h2><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h2>
-  <p class="price">${{ product.price }}</p>
-  {{ product.description|linebreaks }}
-</div>
+{% block domready %}
+  $('a.wishlist').click(function (e) {
+    e.preventDefault()
+    $.post("{% url 'wishlist:wishlist_add' %}", {
+      id: $(this).data('id')
+    }, function (data) {
+      if (data['status'] == 'ok') {
+        location.reload()
+      }
+    })
+  })
+{% endblock domready %}

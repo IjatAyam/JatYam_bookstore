@@ -6,6 +6,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('cart/', include('cart.urls', namespace='cart')),
+    path('wishlist/', include('wishlist.urls', namespace='wishlist')),
     path('coupons/', include('coupons.urls', namespace='coupons')),
     path('', include('shop.urls', namespace='shop'))
 ]

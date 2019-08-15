@@ -22,6 +22,8 @@
     Module Activation
     Cartbox Toggler
     Search Toggler
+    Coupon Toggler
+    Wishlist Toggler
     Cart Toggler
     Setting Toggler
     Slider Activation
@@ -341,6 +343,24 @@
     })
   }
   couponToggler()
+
+  /*============= Wishlist Toggler ==============*/
+  function wishlistToggler() {
+    var trigger = $(".wishlistbox_active"),
+      container = $(".miniwishlist__active")
+    trigger.on("click", function(e) {
+      e.preventDefault()
+      container.toggleClass("is-visible")
+    })
+    trigger.on("click", function(e) {
+      e.preventDefault()
+      container.toggleClass("")
+    })
+    $(".miwishlist__close").on("click", function() {
+      container.removeClass("is-visible")
+    })
+  }
+  wishlistToggler()
 
   /*============= Cart Toggler ==============*/
   function cartToggler() {

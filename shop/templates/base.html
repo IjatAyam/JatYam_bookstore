@@ -65,11 +65,85 @@
           <div class="col-md-8 col-sm-8 col-5 col-lg-2">
             <ul class="header__sidebar__right d-flex justify-content-end align-items-center">
               <li class="shop_search"><a class="search__active" href="#"></a></li>
-              <li class="wishlist"><a href="#"></a></li>
+
+              {% with total_items=wishlist|length %}
+              <li class="wishlist">
+                <a class="wishlistbox_active" href="#">
+                  {% if total_items > 0 %}
+                  <span class="product_qty">{{ total_items }}</span>
+                  {% endif %}
+                </a>
+                <!-- Start Wishlist -->
+                <div class="block-minicart miniwishlist__active">
+                  <div class="minicart-content-wrapper">
+                    <div class="miwishlist__close">
+                      <span>close</span>
+                    </div>
+                    {% if wishlist|length > 0 %}
+                    <div class="mini_action checkout">
+                      <a class="checkout__btn" href="{% url 'wishlist:wishlist_detail' %}">Go to Wishlist</a>
+                    </div>
+                    <div class="single__items">
+                      <div class="miniproduct">
+                        <!-- single items -->
+                        {% for item in wishlist %}
+                        {% with product=item.product %}
+                        <div class="item01 d-flex mt--20">
+                          <div class="thumb">
+                            <a href="{{ product.get_absolute_url }}">
+                              {% if product.image %}
+                              {% thumbnail product.image "75x94" crop="100%" as im %}
+                              <img src="{{ im.url }}" alt="product img">
+                              {% endthumbnail %}
+                              {% else %}
+                              <img src="{% static 'images/1.jpg' %}" alt="product img">
+                              {% endif %}
+                            </a>
+                          </div>
+                          <div class="content">
+                            <h6><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h6>
+                            <span class="prize">RM{{ product.price }}</span>
+                            <div class="product_prize d-flex justify-content-between">
+                              {% if item.per_now > 0 %}
+                              <span class="qun">{{ item.per_now }}</span>
+                              {% elif item.per_now > 0 %}
+                              <span class="qun">{{ item.per_now }}</span>
+                              {% else %}
+                              <span class="qun">(=)</span>
+                              {% endif %}
+                              <ul class="d-flex justify-content-end">
+                                <li><a href="#"><i class="bi bi-shopping-bag4"></i></a></li>
+                                <li>
+                                  <a href="{% url 'wishlist:wishlist_remove' product.id %}">
+                                    <i class="zmdi zmdi-delete"></i>
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        {% endwith %}
+                        {% endfor %}
+                      </div>
+                    </div>
+                    {% else %}
+                    <div class="items-total d-flex justify-content-between">
+                      <span>Your wishlist is empty.</span>
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+                <!-- End Wishlist -->
+              </li>
+              {% endwith %}
 
               {% with total_items=cart|length %}
-              <li class="shopcart"><a class="cartbox_active" href="#"><span
-                    class="product_qun">{{ total_items }}</span></a>
+              <li class="shopcart">
+                <a class="cartbox_active" href="#">
+                  {% if total_items > 0 %}
+                  <span class="product_qun">{{ total_items }}</span>
+                  {% endif %}
+                </a>
                 <!-- Start Shopping Cart -->
                 <div class="block-minicart minicart__active">
                   <div class="minicart-content-wrapper">
@@ -131,6 +205,7 @@
                     {% endif %}
                   </div>
                 </div>
+                <!-- End Shopping Cart -->
               </li>
               {% endwith %}
 
@@ -263,6 +338,28 @@
   <script src="{% static 'js/bootstrap.min.js' %}"></script>
   <script src="{% static 'js/plugins.js' %}"></script>
   <script src="{% static 'js/active.js' %}"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+  <script>
+    var csrftoken = Cookies.get('csrftoken')
+
+    function csrfSafeMethod(method) {
+      // these HTTP methods do not require CSRF protection
+      return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method))
+    }
+    $.ajaxSetup({
+      beforeSend: function (xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        }
+      }
+    })
+    $(document).ready(function () {
+      {% block domready %}
+      {% endblock domready %}
+    })
+  </script>
 
 </body>
 

@@ -2,6 +2,7 @@ from decimal import Decimal
 from django.conf import settings
 from shop.models import Product
 from coupons.models import Coupon
+from .forms import CartAddProductForm
 
 
 class Cart(object):
@@ -16,8 +17,9 @@ class Cart(object):
             # save an empty cart in the session
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
+        # Check for deleted items
         self.check()
-        # store current applied coupon
+        # Store current applied coupon
         self.coupon_id = self.session.get('coupon_id')
 
     def check(self):
@@ -55,13 +57,17 @@ class Cart(object):
         # get the products objects and add them to the cart
         products = Product.objects.filter(id__in=product_ids)
 
-        cart = self.cart.copy()
+        cart_session = self.cart.copy()
+        cart = {}
         for product in products:
-            cart[str(product.id)]['product'] = product
+            cart[str(product.id)] = {'product': product}
 
-        for item in cart.values():
-            item['price'] = Decimal(item['price'])
-            item['total_price'] = item['price'] * item['quantity']
+        for item, item_s in zip(cart.values(), cart_session.values()):
+            item['quantity'] = item_s['quantity']
+            item['price'] = Decimal(item_s['price'])
+            item['total_price'] = item['price'] * item_s['quantity']
+            item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'],
+                                                                       'update': True})
             yield item
 
     def remove(self, product):

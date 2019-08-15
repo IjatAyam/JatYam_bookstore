@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+
+{% block title %}
+Wishlist
+{% endblock title %}
+
+{% block breadcrump %}
+<h2 class="bradcaump-title">Your Wishlist</h2>
+<nav class="bradcaump-content">
+  <a class="breadcrumb_item" href="/">Home</a>
+  <span class="brd-separetor">/</span>
+  <span class="breadcrumb_item active">Wishlist</span>
+</nav>
+{% endblock breadcrump %}
+
+{% block content %}
+<!-- wishlist-main-area start -->
+<div class="wishlist-area section-padding--lg bg__white">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="wishlist-content">
+          <form action="#">
+            <div class="wishlist-table wnro__table table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="product-remove"></th>
+                    <th class="product-thumbnail"></th>
+                    <th class="product-name"><span class="nobr">Product Name</span></th>
+                    <th class="product-price"><span class="nobr"> Unit Price </span></th>
+                    <th class="product-stock-status"><span class="nobr"> Stock Status </span></th>
+                    <th class="product-add-to-cart"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in wishlist %}
+                  {% with product=item.product %}
+                  <tr>
+                    <td class="product-remove"><a href="{% url 'wishlist:wishlist_remove' product.id %}">×</a></td>
+                    <td class="product-thumbnail">
+                      <a href="{{ product.get_absolute_url }}">
+                        {% if product.image %}
+                        {% thumbnail product.image "80x100" crop="100%" as im %}
+                        <img src="{{ im.url }}" alt="product img">
+                        {% endthumbnail %}
+                        {% else %}
+                        <img src="{% static 'images/1.jpg' %}" alt="product img">
+                        {% endif %}
+                      </a>
+                    </td>
+                    <td class="product-name"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></td>
+                    <td class="product-price">
+                      <span class="amount">RM{{ product.price }}</span>
+                      {% if item.per_now > 0 %}
+                      <span class="morles-up">(+{{ item.per_now }}%)</span>
+                      {% elif item.per_now < 0%}
+                      <span class="morles-down">({{ item.per_now }}%)</span>
+                      {% endif %}
+                    </td>
+                    <td class="product-stock-status"><span class="wishlist-in-stock">In Stock</span></td>
+                    <td class="product-add-to-cart"><a href="#">Add to Cart</a></td>
+                  </tr>
+                  {% endwith %}
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- wishlist-main-area end -->
+{% endblock content %}

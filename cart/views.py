@@ -1,5 +1,3 @@
-from django.http import HttpResponseRedirect
-from django.views.decorators.http import require_POST
 from django.shortcuts import render, get_object_or_404, redirect
 from shop.models import Product
 from django.views.generic import FormView, View
@@ -40,10 +38,10 @@ class CartDetail(View):
 
     def get(self, request, *args, **kwargs):
         cart = Cart(request)
-        for item in cart:
-            item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'],
-                                                                       'update': True})
         coupon_apply_form = CouponApplyForm()
+
+        for item in cart:
+            print(str(item['update_quantity_form']))
 
         # r = Recommender()
         # cart_products = [item['product'] for item in cart]

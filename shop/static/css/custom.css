@@ -42,3 +42,68 @@ button[type=submit].link-btn {
   top: 0;
   width: 60px;
 }
+
+span.morles-down {
+  font-size: 14px;
+  font-weight: 450;
+  color: #79a546;
+}
+
+span.morles-up {
+  font-size: 14px;
+  font-weight: 450;
+  color: #a55446;
+}
+
+span.product_qty {
+  background: #ce7852 none repeat scroll 0 0;
+  border-radius: 100px;
+  color: #fff;
+  display: block;
+  font-size: 9px;
+  font-weight: 400;
+  height: 17px;
+  line-height: 17px;
+  margin: -8px 0 0;
+  min-width: auto;
+  overflow: visible;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 44%;
+  width: 16px;
+}
+
+.minicart-content-wrapper .miwishlist__close {
+  color: #333;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 400;
+  padding-right: 25px;
+  position: absolute;
+  right: 15px;
+  text-transform: uppercase;
+  top: 12px;
+  transition: all 0.4s ease 0s;
+  z-index: 11;
+}
+
+.minicart-content-wrapper .miwishlist__close:hover {
+  color: #e59285;
+}
+
+.minicart-content-wrapper .miwishlist__close::after {
+  content: "\f136";
+  font-family: Material-Design-Iconic-Font;
+  font-size: 24px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.header__area .header__sidebar__right>li.wishlist {
+  padding-left: 25px;
+  padding-right: 25px;
+  position: relative;
+}

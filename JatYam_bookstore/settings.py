@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'cart.apps.CartConfig',
     'sorl.thumbnail',
     'coupons.apps.CouponsConfig',
+    'wishlist.apps.WishlistConfig',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +69,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'cart.context_processors.cart',
                 'shop.context_processors.search_form',
+                'wishlist.context_processors.wishlist',
             ],
         },
     },
@@ -138,3 +140,4 @@ EMAIL_USE_TLS = True
 
 # session usage
 CART_SESSION_ID = 'cart'
+WISHLIST_SESSION_ID = 'wishlist'

@@ -61,7 +61,6 @@ Cart
                     {% csrf_token %}
                     <input type="submit" value="Update" class="update-qty">
                   </form>
-                  <!-- <input type="number" value="{{ item.quantity }}"> -->
                 </td>
                 <td class="product-subtotal">RM{{ item.total_price }}</td>
                 <td class="product-remove"><a href="{% url 'cart:cart_remove' product.id %}">X</a></td>
