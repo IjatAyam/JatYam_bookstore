@@ -55,15 +55,15 @@ Cart
                 <td class="product-name"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></td>
                 <td class="product-price"><span class="amount">RM{{ item.price }}</span></td>
                 <td class="product-quantity">
-                  <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                  <form id="cartForm{{ product.id }}">
+                    <input type="hidden" name="id" value="{{ product.id }}">
                     {{ item.update_quantity_form.quantity }}
                     {{ item.update_quantity_form.update }}
-                    {% csrf_token %}
                     <input type="submit" value="Update" class="update-qty">
                   </form>
                 </td>
                 <td class="product-subtotal">RM{{ item.total_price }}</td>
-                <td class="product-remove"><a href="{% url 'cart:cart_remove' product.id %}">X</a></td>
+                <td class="product-remove"><a class="cart-remove" data-id="{{ product.id }}" href="#">X</a></td>
               </tr>
               {% endwith %}
               {% endfor %}
@@ -72,7 +72,7 @@ Cart
         </div>
         <div class="cartbox__btn">
           <ul class="cart__btn__list d-flex flex-wrap flex-md-nowrap flex-lg-nowrap justify-content-between">
-            <li><a class="coupon__active" href="#">Apply Coupon Code</a></li>
+            <li><a class="coupon__active" href="#">Apply Coupon</a></li>
             <li><a href="#">Check Out</a></li>
           </ul>
         </div>
@@ -129,3 +129,18 @@ Cart
 
 <!-- cart-main-area end -->
 {% endblock content %}
+
+{% block domready %}
+  {% for item in cart %}
+  {% with product=item.product %}
+  $('#cartForm{{ product.id }}').submit(function (e) {
+    e.preventDefault()
+    $.post("{% url 'cart:cart_add' %}", $(this).serialize(), function (data) {
+      if (data['status'] == 'ok') {
+        location.reload()
+      }
+    })
+  })
+  {% endwith %}
+  {% endfor %}
+{% endblock domready %}

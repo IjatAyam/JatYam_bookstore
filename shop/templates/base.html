@@ -112,9 +112,13 @@
                               <span class="qun">(=)</span>
                               {% endif %}
                               <ul class="d-flex justify-content-end">
-                                <li><a href="#"><i class="bi bi-shopping-bag4"></i></a></li>
                                 <li>
-                                  <a href="{% url 'wishlist:wishlist_remove' product.id %}">
+                                  <a class="cart-add" data-id="{{ product.id }}" href="#">
+                                    <i class="bi bi-shopping-bag4"></i>
+                                  </a>
+                                </li>
+                                <li>
+                                  <a class="wishlist-remove" data-id="{{ product.id }}" href="#">
                                     <i class="zmdi zmdi-delete"></i>
                                   </a>
                                 </li>
@@ -184,9 +188,9 @@
                             <div class="product_prize d-flex justify-content-between">
                               <span class="qun">Qty: {{ item.quantity }}</span>
                               <ul class="d-flex justify-content-end">
-                                <li><a href="#"><i class="zmdi zmdi-settings"></i></a></li>
+                                <!-- <li><a href="#"><i class="zmdi zmdi-settings"></i></a></li> -->
                                 <li>
-                                  <a href="{% url 'cart:cart_remove' product.id %}">
+                                  <a class="cart-remove" data-id="{{ product.id }}" href="#">
                                     <i class="zmdi zmdi-delete"></i>
                                   </a>
                                 </li>
@@ -358,6 +362,52 @@
     $(document).ready(function () {
       {% block domready %}
       {% endblock domready %}
+
+      $('a.cart-remove').click(function (e) {
+        e.preventDefault()
+        $.post("{% url 'cart:cart_remove' %}", {
+          id: $(this).data('id')
+        }, function (data) {
+          if (data['status'] == 'ok') {
+            location.reload()
+          }
+        })
+      })
+
+      $('a.wishlist-remove').click(function (e) {
+        e.preventDefault()
+        $.post("{% url 'wishlist:wishlist_remove' %}", {
+          id: $(this).data('id')
+        }, function (data) {
+          if (data['status'] == 'ok') {
+            location.reload()
+          }
+        })
+      })
+
+      $('a.cart-add').click(function (e) {
+        e.preventDefault()
+        $.post("{% url 'cart:cart_add' %}", {
+          id: $(this).data('id'),
+          quantity: 1,
+          update: "False"
+        }, function (data) {
+          if (data['status'] == 'ok') {
+            location.reload()
+          }
+        })
+      })
+
+      $('a.wishlist-add').click(function (e) {
+        e.preventDefault()
+        $.post("{% url 'wishlist:wishlist_add' %}", {
+          id: $(this).data('id')
+        }, function (data) {
+          if (data['status'] == 'ok') {
+            location.reload()
+          }
+        })
+      })
     })
   </script>
 

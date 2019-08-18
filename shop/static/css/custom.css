@@ -107,3 +107,8 @@ span.product_qty {
   padding-right: 25px;
   position: relative;
 }
+
+.block-minicart.is-visible {
+  max-height: 500px;
+  overflow-y: scroll;
+}

@@ -39,7 +39,7 @@ Wishlist
                   {% for item in wishlist %}
                   {% with product=item.product %}
                   <tr>
-                    <td class="product-remove"><a href="{% url 'wishlist:wishlist_remove' product.id %}">×</a></td>
+                    <td class="product-remove"><a class="wishlist-remove" data-id="{{ product.id }}" href="#">×</a></td>
                     <td class="product-thumbnail">
                       <a href="{{ product.get_absolute_url }}">
                         {% if product.image %}

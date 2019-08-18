@@ -77,17 +77,17 @@
                 </div>
 
                 <!-- Cart Form -->
-                <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                <form id="cartForm">
                   <div class="box-tocart d-flex">
                     <span>Qty</span>
+                    <input type="hidden" name="id" value="{{ product.id }}">
                     {{ cart_product_form.quantity }}
                     {{ cart_product_form.update }}
-                    {% csrf_token %}
                     <div class="addtocart__actions">
                       <button class="tocart" type="submit" title="Add to Cart">Add to Cart</button>
                     </div>
                     <div class="product-addto-links clearfix">
-                      <a class="wishlist" href="#" data-id="{{ product.id }}"></a>
+                      <a class="wishlist wishlist-add" data-id="{{ product.id }}" href="#"></a>
                       <a class="compare" href="#"></a>
                     </div>
                   </div>
@@ -142,12 +142,12 @@
             <h3 class="wedget__title">Product Categories</h3>
             <ul>
               <li>
-                <a {% if not category %}class="selected" {% endif %} href="{% url 'shop:product_list' %}">All</a>
+                <a href="{% url 'shop:product_list' %}">All</a>
               </li>
 
               {% for c in categories %}
               <li>
-                <a {% if category.slug == c.slug %}class="selected" {% endif %}
+                <a {% if product.category.slug == c.slug %}class="selected" {% endif %}
                   href="{{ c.get_absolute_url }}">{{ c.name }}</a>
               </li>
               {% endfor %}
@@ -170,14 +170,12 @@
 {% endblock content %}
 
 {% block domready %}
-  $('a.wishlist').click(function (e) {
-    e.preventDefault()
-    $.post("{% url 'wishlist:wishlist_add' %}", {
-      id: $(this).data('id')
-    }, function (data) {
-      if (data['status'] == 'ok') {
-        location.reload()
-      }
-    })
-  })
+$('#cartForm').submit(function (e) {
+e.preventDefault()
+$.post("{% url 'cart:cart_add' %}", $(this).serialize(), function (data) {
+if (data['status'] == 'ok') {
+location.reload()
+}
+})
+})
 {% endblock domready %}

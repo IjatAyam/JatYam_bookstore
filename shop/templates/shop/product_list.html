@@ -124,12 +124,25 @@
                   <div class="action">
                     <div class="actions_inner">
                       <ul class="add_to_links">
-                        <li><a class="cart" href="#"><i class="bi bi-shopping-bag4"></i></a></li>
-                        <li><a class="wishlist" href="#"><i class="bi bi-shopping-cart-full"></i></a></li>
+                        <li>
+                          <a class="cart cart-add" data-id="{{ product.id }}" href="#">
+                            <i class="bi bi-shopping-bag4"></i>
+                          </a>
+                        </li>
+                        <li>
+                          <a class="wishlist wishlist-add" data-id="{{ product.id }}" href="#">
+                            <i class="bi bi-shopping-cart-full"></i>
+                          </a>
+                        </li>
                         <li><a class="compare" href="#"><i class="bi bi-heart-beat"></i></a></li>
                         <!-- <li><a data-toggle="modal" title="Quick View" class="quickview modal-view detail-link"
                             href="#productmodal"><i class="bi bi-search"></i></a></li> -->
-                        <li><i class="bi bi-search"></i></a></li>
+                        <li>
+                          <a data-toggle="modal" title="Quick View" class="quickview modal-view detail-link"
+                            href="#productmodal">
+                            <i class="bi bi-search"></i>
+                          </a>
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -194,8 +207,8 @@
                   </ul>
                   {{ product.description|truncatechars:250 }}
                   <ul class="cart__action d-flex">
-                    <li class="cart"><a href="#">Add to cart</a></li>
-                    <li class="wishlist"><a href="#"></a></li>
+                    <li class="cart"><a class="cart-add" data-id="{{ product.id }}" href="#">Add to cart</a></li>
+                    <li class="wishlist"><a class="wishlist-add" data-id="{{ product.id }}" href="#"></a></li>
                     <li class="compare"><a href="#"></a></li>
                   </ul>
 

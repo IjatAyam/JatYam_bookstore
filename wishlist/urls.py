@@ -8,7 +8,7 @@ urlpatterns = [
     path('add/',
          views.WishlistAdd.as_view(),
          name='wishlist_add'),
-    path('remove/<int:product_id>/',
+    path('remove/',
          views.WishlistRemove.as_view(),
          name='wishlist_remove'),
 ]

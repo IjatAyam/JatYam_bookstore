@@ -1,36 +1,51 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from shop.models import Product
-from django.views.generic import FormView, View
+from django.views.generic import View
+from django.http import JsonResponse
+from django.utils.decorators import method_decorator
 
+from common.decorators import ajax_required
+from shop.models import Product
 from coupons.forms import CouponApplyForm
 from .forms import CartAddProductForm
 from .cart import Cart
 
 
-class CartAdd(FormView):
+class CartAdd(View):
     http_method_names = ['post']
-    form_class = CartAddProductForm
 
-    def post(self, request, product_id, *args, **kwargs):
-        self.cart = Cart(request)
-        self.product = get_object_or_404(Product, id=product_id)
-        return super(CartAdd, self).post(request, product_id, *args, **kwargs)
-
-    def form_valid(self, form):
-        cd = form.cleaned_data
-        self.cart.add(product=self.product,
-                      quantity=cd['quantity'],
-                      update_quantity=cd['update'])
-        return redirect('cart:cart_detail')
+    @method_decorator(ajax_required)
+    def post(self, request, *args, **kwargs):
+        cart = Cart(request)
+        product_id = request.POST.get('id')
+        quantity = request.POST.get('quantity')
+        update = request.POST.get('update')
+        if product_id and quantity and update:
+            try:
+                product = Product.objects.get(id=product_id)
+                cart.add(product=product,
+                         quantity=int(quantity),
+                         update_quantity=bool(update == "True"))
+                return JsonResponse({'status': 'ok'})
+            except:
+                pass
+        return JsonResponse({'status': 'ko'})
 
 
 class CartRemove(View):
+    http_method_names = ['post']
 
-    def get(self, request, product_id, *args, **kwargs):
+    @method_decorator(ajax_required)
+    def post(self, request, *args, **kwargs):
         cart = Cart(request)
-        product = get_object_or_404(Product, id=product_id)
-        cart.remove(product)
-        return redirect('cart:cart_detail')
+        product_id = request.POST.get('id')
+        if product_id:
+            try:
+                product = Product.objects.get(id=product_id)
+                cart.remove(product)
+                return JsonResponse({'status': 'ok'})
+            except:
+                pass
+        return JsonResponse({'status': 'ko'})
 
 
 class CartDetail(View):
@@ -39,9 +54,6 @@ class CartDetail(View):
     def get(self, request, *args, **kwargs):
         cart = Cart(request)
         coupon_apply_form = CouponApplyForm()
-
-        for item in cart:
-            print(str(item['update_quantity_form']))
 
         # r = Recommender()
         # cart_products = [item['product'] for item in cart]
