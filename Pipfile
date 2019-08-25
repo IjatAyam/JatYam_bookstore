@@ -15,6 +15,8 @@ pillow = "*"
 psycopg2 = "*"
 sorl-thumbnail = "*"
 django-heroku = "*"
+boto3 = "*"
+django-storages = "*"
 
 [requires]
 python_version = "3.7"
