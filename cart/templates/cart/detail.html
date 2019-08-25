@@ -73,7 +73,7 @@ Cart
         <div class="cartbox__btn">
           <ul class="cart__btn__list d-flex flex-wrap flex-md-nowrap flex-lg-nowrap justify-content-between">
             <li><a class="coupon__active" href="#">Apply Coupon</a></li>
-            <li><a href="#">Check Out</a></li>
+            <li><a href="{% url 'orders:order_create' %}">Check Out</a></li>
           </ul>
         </div>
       </div>
@@ -131,16 +131,16 @@ Cart
 {% endblock content %}
 
 {% block domready %}
-  {% for item in cart %}
-  {% with product=item.product %}
-  $('#cartForm{{ product.id }}').submit(function (e) {
-    e.preventDefault()
-    $.post("{% url 'cart:cart_add' %}", $(this).serialize(), function (data) {
-      if (data['status'] == 'ok') {
-        location.reload()
-      }
-    })
-  })
-  {% endwith %}
-  {% endfor %}
+{% for item in cart %}
+{% with product=item.product %}
+$('#cartForm{{ product.id }}').submit(function (e) {
+e.preventDefault()
+$.post("{% url 'cart:cart_add' %}", $(this).serialize(), function (data) {
+if (data['status'] == 'ok') {
+location.reload()
+}
+})
+})
+{% endwith %}
+{% endfor %}
 {% endblock domready %}

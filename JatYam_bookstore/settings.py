@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'coupons.apps.CouponsConfig',
     'wishlist.apps.WishlistConfig',
+    'orders.apps.OrdersConfig',
 ]
 
 MIDDLEWARE = [
