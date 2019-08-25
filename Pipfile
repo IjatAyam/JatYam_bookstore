@@ -6,9 +6,14 @@ verify_ssl = true
 [dev-packages]
 pylint = "*"
 autopep8 = "*"
+ipython = "*"
 
 [packages]
 django = "*"
+gunicorn = "*"
+pillow = "*"
+psycopg2 = "*"
+sorl-thumbnail = "*"
 
 [requires]
 python_version = "3.7"
