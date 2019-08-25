@@ -14,6 +14,7 @@ gunicorn = "*"
 pillow = "*"
 psycopg2 = "*"
 sorl-thumbnail = "*"
+django-heroku = "*"
 
 [requires]
 python_version = "3.7"
